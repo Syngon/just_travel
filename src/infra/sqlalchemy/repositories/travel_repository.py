@@ -5,23 +5,25 @@ from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
 
 
-class TravelRepository():
-
+class TravelRepository:
     def __init__(self, session: Session):
         self.session = session
 
     def create(self, travel: schemas.Travel):
-        travel_bd = models.Travel(name=travel.username,
-                                    place=travel.place,
-                                    price=travel.price,
-                                    created_at= now())
+        travel_bd = models.Travel(
+            user_id=travel.user_id,
+            name=travel.name,
+            place=travel.place,
+            price=travel.price,
+            created_at=now(),
+        )
 
         self.session.add(travel_bd)
         self.session.commit()
         self.session.refresh(travel_bd)
         return travel_bd
 
-    def get_travel_by_id(self, travel_id: int):
+    def get_travel_by_id(self, travel_id: int) -> models.Travel:
         statement = select(models.Travel).where(models.Travel.travel_id == travel_id)
         travel = self.session.execute(statement).scalars().first()
         return travel
@@ -31,7 +33,11 @@ class TravelRepository():
         if not find_travel:
             return False
 
-        statement = update(models.Travel).where(models.Travel.travel_id == travel_id).values(price=new_price)
+        statement = (
+            update(models.Travel)
+            .where(models.Travel.travel_id == travel_id)
+            .values(price=new_price)
+        )
         self.session.execute(statement)
         self.session.commit()
         return self.get_travel_by_id(travel_id)

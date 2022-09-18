@@ -9,17 +9,15 @@ from src.routers.auth_utils import get_logged_in_user
 router = APIRouter()
 
 
-@router.post('/signup',
-             status_code=status.HTTP_201_CREATED,
-             response_model=User)
+@router.post("/signup", status_code=status.HTTP_201_CREATED, response_model=User)
 def signup(user: SimpleUser, session: Session = Depends(get_db)):
     # verificar se já existe um para o username
-    find_user = UserRepository(
-        session).get_user_by_name(user.username)
+    find_user = UserRepository(session).get_user_by_name(user.username)
 
     if find_user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail='User already exists')
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists"
+        )
 
     # criar novo usuario
     user.password = hash_provider.generate_hash(user.password)
@@ -27,7 +25,7 @@ def signup(user: SimpleUser, session: Session = Depends(get_db)):
     return created_user
 
 
-@router.post('/token', response_model=LoginSuccess)
+@router.post("/token", response_model=LoginSuccess)
 def login(login_data: LoginData, session: Session = Depends(get_db)):
     password = login_data.password
     username = login_data.username
@@ -35,18 +33,23 @@ def login(login_data: LoginData, session: Session = Depends(get_db)):
     user = UserRepository(session).get_user_by_name(username)
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail='Wrong data, please use the correct data!')
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Wrong data, please use the correct data!",
+        )
 
     valid_password = hash_provider.verify_hash(password, user.password)
     if not valid_password:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail='Password is not valid!')
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Password is not valid!"
+        )
     # Gerar Token JWT
-    token = token_provider.create_access_token({'sub': user.username})
+    token = token_provider.create_access_token({"sub": user.username})
+    del user.password
+
     return LoginSuccess(user=user, access_token=token)
 
 
-@router.get('/me', response_model=User)
+@router.get("/me", response_model=User)
 def me(user: User = Depends(get_logged_in_user)):
     return user

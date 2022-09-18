@@ -1,5 +1,8 @@
 from datetime import datetime
+import string
+from typing import List
 from pydantic import BaseModel
+
 
 class Travel(BaseModel):
     travel_id: int
@@ -8,6 +11,28 @@ class Travel(BaseModel):
     place: str
     price: float
     created_at: datetime
+
+    class Config:
+        orm_mode = True
+
+
+class SimpleTravel(BaseModel):
+    user_id: int
+    name: str
+    place: str
+    price: float
+
+    class Config:
+        orm_mode = True
+
+
+class TravelList(BaseModel):
+    travels: List[Travel]
+
+
+class UserWithIdAndUsername(BaseModel):
+    user_id: int
+    username: str
 
     class Config:
         orm_mode = True
@@ -23,9 +48,16 @@ class User(BaseModel):
     class Config:
         orm_mode = True
 
+
 class SimpleUser(BaseModel):
     username: str
     password: str
+
+
+class ActionModel(BaseModel):
+    number: float
+    action: str
+
 
 class Log(BaseModel):
     user_id: str
@@ -35,11 +67,18 @@ class Log(BaseModel):
     created_at: datetime
 
 
+class LogData(BaseModel):
+    user_id: int
+    travel_id: int
+    action: str
+    value: int
+
+
 class LoginData(BaseModel):
     password: str
     username: str
 
 
 class LoginSuccess(BaseModel):
-    user: User
+    user: UserWithIdAndUsername
     access_token: str

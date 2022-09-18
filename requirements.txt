@@ -5,3 +5,7 @@ passlib==1.7.4
 pydantic==1.10.2
 python_jose==3.3.0
 starlette==0.20.4
+passlib==1.7.4
+bcrpyt==0.4.2
+pytest==7.1.3
+
