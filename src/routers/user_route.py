@@ -11,7 +11,7 @@ from src.infra.sqlalchemy.repositories.user_repository import UserRepository
 router = APIRouter()
 
 
-@router.get("/user/travels", response_model=List[Travel])
+@router.get("/user/{user_id}/travels", response_model=List[Travel])
 def list_user_travels(user_id: int, session: Session = Depends(get_db)):
     find_travels = UserRepository(session).list_user_travels(user_id)
 
