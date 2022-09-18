@@ -55,7 +55,7 @@ class SimpleUser(BaseModel):
 
 
 class ActionModel(BaseModel):
-    number: float
+    value: float
     action: str
 
 
