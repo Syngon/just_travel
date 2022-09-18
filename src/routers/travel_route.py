@@ -26,6 +26,7 @@ def get_travel_by_id(travel_id: int, session: Session = Depends(get_db)):
     return find_travel
 
 
+# TODO CREATE MIDDLWARE TO LOG (DATABASE AND SERVICE)
 @router.put("/travel/{travel_id}", response_model=Travel)
 def atualizar_produto(
     travel_id: int,
