@@ -2,7 +2,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 class Travel(BaseModel):
-    id: int
+    travel_id: int
     user_id: int
     name: str
     place: str
@@ -14,7 +14,7 @@ class Travel(BaseModel):
 
 
 class User(BaseModel):
-    id: int
+    user_id: int
     username: str
     password: str
     is_active: bool
@@ -22,6 +22,10 @@ class User(BaseModel):
 
     class Config:
         orm_mode = True
+
+class SimpleUser(BaseModel):
+    username: str
+    password: str
 
 class Log(BaseModel):
     user_id: str

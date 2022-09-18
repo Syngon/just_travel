@@ -1,8 +1,8 @@
 from sqlalchemy import select, delete, update
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.functions import now
 from src.schemas import schemas
 from src.infra.sqlalchemy.models import models
-import datetime
 
 
 class TravelRepository():
@@ -11,10 +11,10 @@ class TravelRepository():
         self.session = session
 
     def create(self, travel: schemas.Travel):
-        travel_bd = models.User(name=travel.username,
+        travel_bd = models.Travel(name=travel.username,
                                     place=travel.place,
                                     price=travel.price,
-                                    created_at=datetime.datetime.now)
+                                    created_at= now())
 
         self.session.add(travel_bd)
         self.session.commit()
@@ -22,7 +22,7 @@ class TravelRepository():
         return travel_bd
 
     def get_travel_by_id(self, travel_id: int):
-        statement = select(models.Travel).where(models.Travel.id == travel_id)
+        statement = select(models.Travel).where(models.Travel.travel_id == travel_id)
         travel = self.session.execute(statement).scalars().first()
         return travel
 
@@ -31,7 +31,7 @@ class TravelRepository():
         if not find_travel:
             return False
 
-        statement = update(models.Travel).where(models.Travel.id == travel_id).values(price=new_price)
+        statement = update(models.Travel).where(models.Travel.travel_id == travel_id).values(price=new_price)
         self.session.execute(statement)
         self.session.commit()
         return self.get_travel_by_id(travel_id)
@@ -42,7 +42,7 @@ class TravelRepository():
         if not find_travel:
             return False
 
-        statement = delete(models.Travel).where(models.Travel.id == travel_id)
+        statement = delete(models.Travel).where(models.Travel.travel_id == travel_id)
         self.session.execute(statement)
         self.session.commit()
 
