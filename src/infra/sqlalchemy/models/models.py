@@ -13,8 +13,6 @@ class Travel(Base):
     price = Column(Float)
     created_at = Column(DateTime(timezone=True), server_default=now())
 
-    # TODO CREATE VALIDATOR
-
 
 class User(Base):
     __tablename__ = "user"
@@ -25,7 +23,6 @@ class User(Base):
     is_active = Column(Boolean)
     created_at = Column(DateTime(timezone=True), server_default=now())
 
-    # TODO CREATE VALIDATOR
 
 
 class Log(Base):

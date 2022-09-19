@@ -16,12 +16,8 @@ if config.config_file_name is not None:
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-
-from src.infra.sqlalchemy.models.models import User, Travel, Log
 from src.infra.sqlalchemy.config.database import Base
-
-# from myapp import mymodel
-# target_metadata = mymodel.Base.metadata
+from src.infra.sqlalchemy.models.models import User, Travel, Log
 target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
