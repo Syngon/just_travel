@@ -1,5 +1,4 @@
 from datetime import datetime
-import string
 from typing import List
 from pydantic import BaseModel
 
@@ -60,8 +59,9 @@ class ActionModel(BaseModel):
 
 
 class Log(BaseModel):
-    user_id: str
-    travel_id: str
+    log_id: int
+    user_id: int
+    travel_id: int
     action: str
     value: float
     created_at: datetime
@@ -71,7 +71,7 @@ class LogData(BaseModel):
     user_id: int
     travel_id: int
     action: str
-    value: int
+    value: float
 
 
 class LoginData(BaseModel):

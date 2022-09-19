@@ -1,6 +1,11 @@
-from fastapi import APIRouter, BackgroundTasks
-from src.schemas.schemas import LogData
+from fastapi import APIRouter, status, Depends, HTTPException, BackgroundTasks
+from src.schemas.schemas import Log, LogData
+from src.infra.sqlalchemy.config.database import get_db
 from src.services.write_notification import write_notification
+from sqlalchemy.orm import Session
+from src.infra.sqlalchemy.repositories.log_repository import LogRepository
+from typing import List
+
 
 router = APIRouter()
 
@@ -30,6 +35,6 @@ def check_data_types(json_log: LogData):
         return False
     if not isinstance(json_log.action, str):
         return False
-    if not isinstance(json_log.value, int):
+    if not isinstance(json_log.value, float):
         return False
     return True

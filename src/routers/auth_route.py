@@ -11,7 +11,6 @@ router = APIRouter()
 
 @router.post("/signup", status_code=status.HTTP_201_CREATED, response_model=User)
 def signup(user: SimpleUser, session: Session = Depends(get_db)):
-    # verificar se já existe um para o username
     find_user = UserRepository(session).get_user_by_name(user.username)
 
     if find_user:
@@ -19,7 +18,6 @@ def signup(user: SimpleUser, session: Session = Depends(get_db)):
             status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists"
         )
 
-    # criar novo usuario
     user.password = hash_provider.generate_hash(user.password)
     created_user = UserRepository(session).create(user)
     return created_user
@@ -43,7 +41,7 @@ def login(login_data: LoginData, session: Session = Depends(get_db)):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Password is not valid!"
         )
-    # Gerar Token JWT
+
     token = token_provider.create_access_token({"sub": user.username})
     del user.password
 

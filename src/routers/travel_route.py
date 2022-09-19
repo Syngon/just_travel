@@ -1,10 +1,10 @@
 from fastapi import APIRouter, status, Depends, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
-from src.schemas.schemas import LogData
 from src.services.write_notification import write_notification
 from src.schemas.schemas import Travel, SimpleTravel, ActionModel
 from src.infra.sqlalchemy.config.database import get_db
 from src.infra.sqlalchemy.repositories.travel_repository import TravelRepository
+from src.infra.sqlalchemy.repositories.log_repository import LogRepository
 
 router = APIRouter()
 
@@ -91,6 +91,9 @@ def atualizar_produto(
         )
 
     TravelRepository(session).update(travel_id, new_price)
+    travel_aux = TravelRepository(session).get_travel_by_id(travel_id)
+    user_id = travel_aux.user_id
+    LogRepository(session).create(user_id, travel_id, action_params.action, action_params.value)
     return TravelRepository(session).get_travel_by_id(travel_id)
 
 
