@@ -1,17 +1,14 @@
-import pytest
-import json
+from config import client
 
-from tests.config import client
-
-username = "Pedr2231321312321312322o"
-password = "Pedr231232122o"
+username = "ddddddjdddddaddddddddddddddddwhudih"
+password = "dawdawdawd"
 
 data = {"username": username, "password": password}
 invalid_login = {"username": f"{username}123", "password": password}
 invalid_password = {"username": username, "password": f"{password}12321321"}
 
-signup_url = "/auth/signup/"
-login_url = "/auth/token/"
+signup_url = "/auth/signup"
+login_url = "/auth/token"
 
 
 # SIGNUP TESTS
@@ -20,11 +17,11 @@ def test_sign_up_with_correct_data():
     assert response.status_code == 201
 
     res = response.json()
-    assert res["user_id"] == pytest.isinstance(response.json()["user_id"], int)
-    assert res["username"] == pytest.isinstance(response.json()["username"], str)
-    assert res["password"] == pytest.isinstance(response.json()["password"], str)
-    assert res["is_active"] == pytest.isinstance(response.json()["is_active"], bool)
-    assert res["created_at"] == pytest.isinstance(response.json()["created_at"], str)
+    assert isinstance(response.json()["user_id"], int)
+    assert isinstance(response.json()["username"], str)
+    assert isinstance(response.json()["password"], str)
+    assert isinstance(response.json()["is_active"], bool)
+    assert isinstance(response.json()["created_at"], str)
 
 
 def test_existing_username_sign_up():
@@ -79,8 +76,8 @@ def test_valid_login():
     assert response.status_code == 200
     assert response.json() == {
         "user": {
-            "user_id": response.json()["access"]["user_id"],
-            "username": response.json()["access"]["username"],
+            "user_id": response.json()["user"]["user_id"],
+            "username": response.json()["user"]["username"],
         },
-        "access_token": response.json()["access_token"],
+        "access_token": response.json()["access_token"]
     }

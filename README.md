@@ -45,6 +45,15 @@ Construir uma API de uma calculadora.
 ```
 
 
+## Rodando os testes
+
+Para rodar os testes, rode o seguinte comando
+
+```bash
+  python -m pytest tests
+```
+
+
 ## Documentação da API
 
 ### AUTH

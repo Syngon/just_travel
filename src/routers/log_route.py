@@ -10,7 +10,7 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/log/")
+@router.post("/log")
 def log(json_log: LogData, background: BackgroundTasks):
 
     data_is_correct = check_data_types(json_log)
